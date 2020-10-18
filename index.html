@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battleship By Michelle</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="contenedor-principal">
+        <div class="tablero enemigo" style="display: none;">
+            <div>
+                <h2>Tablero Enemigo</h2>
+            </div>
+            <div class="linea">
+                <div class="cuadro-blanco">0</div>
+                <div class="marcador superior">1</div>
+                <div class="marcador superior">2</div>
+                <div class="marcador superior">3</div>
+                <div class="marcador superior">4</div>
+                <div class="marcador superior">5</div>
+                <div class="marcador superior">6</div>
+                <div class="marcador superior">7</div>
+                <div class="marcador superior">8</div>
+                <div class="marcador superior">9</div>
+            </div>
+            <div class="linea">
+                <div class="marcador lateral">1</div>
+                <div class="box" id="1x1y"></div>
+                <div class="box" id="2x1y"></div>
+                <div class="box" id="3x1y"></div>
+                <div class="box" id="4x1y"></div>
+                <div class="box" id="5x1y"></div>
+                <div class="box" id="6x1y"></div>
+                <div class="box" id="7x1y"></div>
+                <div class="box" id="8x1y"></div>
+                <div class="box" id="9x1y"></div>
+            </div>
+            <div class="linea">
+                <div class="marcador lateral">2</div>
+                <div class="box" id="1x2y"></div>
+                <div class="box" id="2x2y"></div>
+                <div class="box" id="3x2y"></div>
+                <div class="box" id="4x2y"></div>
+                <div class="box" id="5x2y"></div>
+                <div class="box" id="6x2y"></div>
+                <div class="box" id="7x2y"></div>
+                <div class="box" id="8x2y"></div>
+                <div class="box" id="9x2y"></div>
+            </div>
+            <div class="linea">
+                <div class="marcador lateral">3</div>
+                <div class="box" id="1x3y"></div>
+                <div class="box" id="2x3y"></div>
+                <div class="box" id="3x3y"></div>
+                <div class="box" id="4x3y"></div>
+                <div class="box" id="5x3y"></div>
+                <div class="box" id="6x3y"></div>
+                <div class="box" id="7x3y"></div>
+                <div class="box" id="8x3y"></div>
+                <div class="box" id="9x3y"></div>
+            </div>
+            <div class="linea">
+                <div class="marcador lateral">4</div>
+                <div class="box" id="1x4y"></div>
+                <div class="box" id="2x4y"></div>
+                <div class="box" id="3x4y"></div>
+                <div class="box" id="4x4y"></div>
+                <div class="box" id="5x4y"></div>
+                <div class="box" id="6x4y"></div>
+                <div class="box" id="7x4y"></div>
+                <div class="box" id="8x4y"></div>
+                <div class="box" id="9x4y"></div>
+            </div>
+            <div class="linea">
+                <div class="marcador lateral">5</div>
+                <div class="box" id="1x5y"></div>
+                <div class="box" id="2x5y"></div>
+                <div class="box" id="3x5y"></div>
+                <div class="box" id="4x5y"></div>
+                <div class="box" id="5x5y"></div>
+                <div class="box" id="6x5y"></div>
+                <div class="box" id="7x5y"></div>
+                <div class="box" id="8x5y"></div>
+                <div class="box" id="9x5y"></div>
+            </div>
+            <div class="linea">
+                <div class="marcador lateral">6</div>
+                <div class="box" id="1x6y"></div>
+                <div class="box" id="2x6y"></div>
+                <div class="box" id="3x6y"></div>
+                <div class="box" id="4x6y"></div>
+                <div class="box" id="5x6y"></div>
+                <div class="box" id="6x6y"></div>
+                <div class="box" id="7x6y"></div>
+                <div class="box" id="8x6y"></div>
+                <div class="box" id="9x6y"></div>
+            </div>
+            <div class="linea">
+                <div class="marcador lateral">7</div>
+                <div class="box" id="1x7y"></div>
+                <div class="box" id="2x7y"></div>
+                <div class="box" id="3x7y"></div>
+                <div class="box" id="4x7y"></div>
+                <div class="box" id="5x7y"></div>
+                <div class="box" id="6x7y"></div>
+                <div class="box" id="7x7y"></div>
+                <div class="box" id="7x7y"></div>
+                <div class="box" id="8x7y"></div>
+            </div>
+            <div class="linea">
+                <div class="marcador lateral">8</div>
+                <div class="box" id="1x8y"></div>
+                <div class="box" id="2x8y"></div>
+                <div class="box" id="3x8y"></div>
+                <div class="box" id="4x8y"></div>
+                <div class="box" id="5x8y"></div>
+                <div class="box" id="6x8y"></div>
+                <div class="box" id="7x8y"></div>
+                <div class="box" id="8x8y"></div>
+                <div class="box" id="9x8y"></div>
+            </div>
+            <div class="linea">
+                <div class="marcador lateral">9</div>
+                <div class="box" id="1x9y"></div>
+                <div class="box" id="2x9y"></div>
+                <div class="box" id="3x9y"></div>
+                <div class="box" id="4x9y"></div>
+                <div class="box" id="5x9y"></div>
+                <div class="box" id="6x9y"></div>
+                <div class="box" id="7x9y"></div>
+                <div class="box" id="8x9y"></div>
+                <div class="box" id="9x9y"></div>
+            </div>
+            <div class="footer">
+                <div>
+                    <button id="mostrarEnemigo">Mostrar posiciones</button>
+                    <!-- Disparador Modal -->
+                    <button id="disparar">Disparar</button>
+                    <!-- Modal -->
+                    <div id="modalDisparo" class="modal">
+                        <!-- Contenido Modal -->
+                        <div class="modal-contenido">
+                            <div>
+                                <span class="cerrar">&times;</span>
+                                <p>Coordenadas de disparo</p>
+                                <small>(ej: 3x2y)</small>
+                            </div>
+                            <div>
+                                <input type="text" id="coordenadas">
+                                <button id="dispararMisil">Disparar</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tablero jugador">
+            <div>
+                <h2>Tu Tablero</h2>
+            </div>
+            <div class="linea">
+                <div class="cuadro-blanco">0</div>
+                <div class="marcador superior">1</div>
+                <div class="marcador superior">2</div>
+                <div class="marcador superior">3</div>
+                <div class="marcador superior">4</div>
+                <div class="marcador superior">5</div>
+                <div class="marcador superior">6</div>
+                <div class="marcador superior">7</div>
+                <div class="marcador superior">8</div>
+                <div class="marcador superior">9</div>
+            </div>
+            <div class="linea">
+                <div class="marcador lateral">1</div>
+                <div class="boxJugador" id="1y1x"></div>
+                <div class="boxJugador" id="1y2x"></div>
+                <div class="boxJugador" id="1y3x"></div>
+                <div class="boxJugador" id="1y4x"></div>
+                <div class="boxJugador" id="1y5x"></div>
+                <div class="boxJugador" id="1y6x"></div>
+                <div class="boxJugador" id="1y7x"></div>
+                <div class="boxJugador" id="1y8x"></div>
+                <div class="boxJugador" id="1y9x"></div>
+            </div>
+            <div class="linea">
+                <div class="marcador lateral">2</div>
+                <div class="boxJugador" id="2y1x"></div>
+                <div class="boxJugador" id="2y2x"></div>
+                <div class="boxJugador" id="2y3x"></div>
+                <div class="boxJugador" id="2y4x"></div>
+                <div class="boxJugador" id="2y5x"></div>
+                <div class="boxJugador" id="2y6x"></div>
+                <div class="boxJugador" id="2y7x"></div>
+                <div class="boxJugador" id="2y8x"></div>
+                <div class="boxJugador" id="2y9x"></div>
+            </div>
+            <div class="linea">
+                <div class="marcador lateral">3</div>
+                <div class="boxJugador" id="3y1x"></div>
+                <div class="boxJugador" id="3y2x"></div>
+                <div class="boxJugador" id="3y3x"></div>
+                <div class="boxJugador" id="3y4x"></div>
+                <div class="boxJugador" id="3y5x"></div>
+                <div class="boxJugador" id="3y6x"></div>
+                <div class="boxJugador" id="3y7x"></div>
+                <div class="boxJugador" id="3y8x"></div>
+                <div class="boxJugador" id="3y9x"></div>
+            </div>
+            <div class="linea">
+                <div class="marcador lateral">4</div>
+                <div class="boxJugador" id="4y1x"></div>
+                <div class="boxJugador" id="4y2x"></div>
+                <div class="boxJugador" id="4y3x"></div>
+                <div class="boxJugador" id="4y4x"></div>
+                <div class="boxJugador" id="4y5x"></div>
+                <div class="boxJugador" id="4y6x"></div>
+                <div class="boxJugador" id="4y7x"></div>
+                <div class="boxJugador" id="4y8x"></div>
+                <div class="boxJugador" id="4y9x"></div>
+            </div>
+            <div class="linea">
+                <div class="marcador lateral">5</div>
+                <div class="boxJugador" id="5y1x"></div>
+                <div class="boxJugador" id="5y2x"></div>
+                <div class="boxJugador" id="5y3x"></div>
+                <div class="boxJugador" id="5y4x"></div>
+                <div class="boxJugador" id="5y5x"></div>
+                <div class="boxJugador" id="5y6x"></div>
+                <div class="boxJugador" id="5y7x"></div>
+                <div class="boxJugador" id="5y8x"></div>
+                <div class="boxJugador" id="5y9x"></div>
+            </div>
+            <div class="linea">
+                <div class="marcador lateral">6</div>
+                <div class="boxJugador" id="6y1x"></div>
+                <div class="boxJugador" id="6y2x"></div>
+                <div class="boxJugador" id="6y3x"></div>
+                <div class="boxJugador" id="6y4x"></div>
+                <div class="boxJugador" id="6y5x"></div>
+                <div class="boxJugador" id="6y6x"></div>
+                <div class="boxJugador" id="6y7x"></div>
+                <div class="boxJugador" id="6y8x"></div>
+                <div class="boxJugador" id="6y9x"></div>
+            </div>
+            <div class="linea">
+                <div class="marcador lateral">7</div>
+                <div class="boxJugador" id="7y1x"></div>
+                <div class="boxJugador" id="7y2x"></div>
+                <div class="boxJugador" id="7y3x"></div>
+                <div class="boxJugador" id="7y4x"></div>
+                <div class="boxJugador" id="7y5x"></div>
+                <div class="boxJugador" id="7y6x"></div>
+                <div class="boxJugador" id="7y7x"></div>
+                <div class="boxJugador" id="7y8x"></div>
+                <div class="boxJugador" id="7y9x"></div>
+            </div>
+            <div class="linea">
+                <div class="marcador lateral">8</div>
+                <div class="boxJugador" id="8y1x"></div>
+                <div class="boxJugador" id="8y2x"></div>
+                <div class="boxJugador" id="8y3x"></div>
+                <div class="boxJugador" id="8y4x"></div>
+                <div class="boxJugador" id="8y5x"></div>
+                <div class="boxJugador" id="8y6x"></div>
+                <div class="boxJugador" id="8y7x"></div>
+                <div class="boxJugador" id="8y8x"></div>
+                <div class="boxJugador" id="8y9x"></div>
+            </div>
+            <div class="linea">
+                <div class="marcador lateral">9</div>
+                <div class="boxJugador" id="9y1x"></div>
+                <div class="boxJugador" id="9y2x"></div>
+                <div class="boxJugador" id="9y3x"></div>
+                <div class="boxJugador" id="9y4x"></div>
+                <div class="boxJugador" id="9y5x"></div>
+                <div class="boxJugador" id="9y6x"></div>
+                <div class="boxJugador" id="9y7x"></div>
+                <div class="boxJugador" id="9y8x"></div>
+                <div class="boxJugador" id="9y9x"></div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <script src="./main.js"></script>
+</body>
+
+</html>

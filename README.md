@@ -8,7 +8,7 @@ El primero que logre eliminar todos los barcos del oponente gana.
 
 ### De manera local:
 
-1. Debes clonar el repositorio con el siguiente comando terminal de tu sistema operativo:
+1. Debes clonar el repositorio con el siguiente comando en la terminal de tu sistema operativo:
     ```
     $git clone https://github.com/michelle-sepulveda-lavin/battleship_game.git
     ```

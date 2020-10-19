@@ -190,3 +190,29 @@ span{
     font-size: 2rem;
     margin-left: 12rem;
 }
+#soloLanchas{
+    display: none;
+}
+#opcionesJuego{
+    border: 2px solid #7881c5;
+    margin: auto;
+    padding: 8rem;
+    background-color: #545a86;
+}
+.agranda{
+    font-size: 2rem;
+    margin: 5px;
+}
+.agranda:hover{
+    cursor: pointer;
+    background-color: rgb(150, 174, 196);;
+}
+#barcos{
+    background-color:  rgb(150, 174, 196);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;  
+}
+#opcionSoloLanchas{
+    padding-bottom: 3.5rem;
+}

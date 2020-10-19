@@ -16,7 +16,9 @@
         <div>
             <h1>Battleship</h1>
         </div>
-        <div><p id="mensaje"></p></div>
+        <div>
+            <p id="mensaje"></p>
+        </div>
     </div>
     <div class="contenedor-principal">
         <!-- Tablero enemigo -->
@@ -181,7 +183,7 @@
         </div>
         <!-- Fin marcador -->
         <!-- Tablero del jugador -->
-        <div class="tablero jugador">
+        <div class="tablero jugador" style="display: none;">
             <div>
                 <h2>Tu Tablero</h2>
             </div>
@@ -308,17 +310,65 @@
         </div>
         <!-- Fin tablero -->
         <!-- Indicaciones -->
-        <div class="instrucciones">
+        <div class="instrucciones" id="soloLanchas">
+
             <h2>Bienvenido/a</h2>
             <p><strong>Instrucciones:</strong></p>
             <ul>
-                <li>Debes posicionar tus 10 barcos en el tablero</li>
-                <li>Luego intenta derribar los barcos enemigos!</li>
-                <li>El computador intentara hacer lo mismo, el primero que hunda los 10 barcos del oponente GANA</li>
+                <li>Debes posicionar tus 10 lanchas en el tablero</li>
+                <li>Cada lancha debe disponer de un cuadrado de distancia respecto a otra</li>
+                <li>Luego intenta derribar las lanchas enemigas!</li>
+                <li>El computador intentara hacer lo mismo, el primero que hunda las 10 lanchas del oponente GANA</li>
             </ul>
             <p>Buena Suerte!</p>
         </div>
+        <div class="instrucciones" id="todosLosBarcos" style="display: none;">
+            <h2>Bienvenido/a</h2>
+            <p><strong>Instrucciones:</strong></p>
+            <ul>
+                <li>Debes posicionar tus barcos en el tablero</li>
+                <li>Luego intenta derribar los barcos enemigos!</li>
+                <li>El computador intentara hacer lo mismo, el primero que hunda barcos del oponente GANA</li>
+            </ul>
+            <p>Buena Suerte!</p>
+<!--             <div id="barcos" style="display:none">
+                <div>
+                    <h5>Barcos disponibles</h5>
+                    <ul>
+                        <li>Buque (4 casillas) c</li>
+                        <li>Submarino (3 casillas)</li>
+                        <li>Crucero (2 casillas)</li>
+                        <li>Lancha (1 casilla)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h5>Orientacion</h5>
+                    <div>
+                        <label class="" id="horizontal">Horizontal
+                            <input type="checkbox" checked="checked">
+                        </label>
+                    </div>
+                    <div>
+                        <label class="" id="vertical">Vertical
+                            <input type="checkbox">
+                        </label>
+
+                    </div>
+                </div>
+            </div> -->
+        </div>
         <!-- Fin Indicaciones -->
+        <!-- Elegir juego -->
+        <div id="opcionesJuego">
+            <div>
+                <h1 style="text-align:center; margin:auto">Elige modo de juego</h1>
+            </div>
+            <div>
+                <button class="boton verde agranda" id="opcionSoloLanchas">Solo Lanchas</button>
+                <button class="boton naranjo agranda" id="opcionFullBarcos"><span id="prueba">Tradicional <br> <small>(Proximamente)</small></span></button>
+            </div>
+        </div>
+        <!-- fin elegir juego -->
         <!-- Modal ganador -->
         <div id="modalGanador" class="modal">
             <!-- Contenido Modal -->

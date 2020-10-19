@@ -5,29 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Battleship By Michelle</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300&family=Press+Start+2P&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
+    <div id="titulo">
+        <h1>Battleship</h1>
+    </div>
     <div class="contenedor-principal">
+        <!-- Tablero enemigo -->
         <div class="tablero enemigo" style="display: none;">
             <div>
                 <h2>Tablero Enemigo</h2>
             </div>
             <div class="linea">
                 <div class="cuadro-blanco">0</div>
-                <div class="marcador superior">1</div>
-                <div class="marcador superior">2</div>
-                <div class="marcador superior">3</div>
-                <div class="marcador superior">4</div>
-                <div class="marcador superior">5</div>
-                <div class="marcador superior">6</div>
-                <div class="marcador superior">7</div>
-                <div class="marcador superior">8</div>
-                <div class="marcador superior">9</div>
+                <div class="marcador superior">1x</div>
+                <div class="marcador superior">2x</div>
+                <div class="marcador superior">3x</div>
+                <div class="marcador superior">4x</div>
+                <div class="marcador superior">5x</div>
+                <div class="marcador superior">6x</div>
+                <div class="marcador superior">7x</div>
+                <div class="marcador superior">8x</div>
+                <div class="marcador superior">9x</div>
             </div>
             <div class="linea">
-                <div class="marcador lateral">1</div>
+                <div class="marcador lateral">1y</div>
                 <div class="box" id="1x1y"></div>
                 <div class="box" id="2x1y"></div>
                 <div class="box" id="3x1y"></div>
@@ -39,7 +46,7 @@
                 <div class="box" id="9x1y"></div>
             </div>
             <div class="linea">
-                <div class="marcador lateral">2</div>
+                <div class="marcador lateral">2y</div>
                 <div class="box" id="1x2y"></div>
                 <div class="box" id="2x2y"></div>
                 <div class="box" id="3x2y"></div>
@@ -51,7 +58,7 @@
                 <div class="box" id="9x2y"></div>
             </div>
             <div class="linea">
-                <div class="marcador lateral">3</div>
+                <div class="marcador lateral">3y</div>
                 <div class="box" id="1x3y"></div>
                 <div class="box" id="2x3y"></div>
                 <div class="box" id="3x3y"></div>
@@ -63,7 +70,7 @@
                 <div class="box" id="9x3y"></div>
             </div>
             <div class="linea">
-                <div class="marcador lateral">4</div>
+                <div class="marcador lateral">4y</div>
                 <div class="box" id="1x4y"></div>
                 <div class="box" id="2x4y"></div>
                 <div class="box" id="3x4y"></div>
@@ -75,7 +82,7 @@
                 <div class="box" id="9x4y"></div>
             </div>
             <div class="linea">
-                <div class="marcador lateral">5</div>
+                <div class="marcador lateral">5y</div>
                 <div class="box" id="1x5y"></div>
                 <div class="box" id="2x5y"></div>
                 <div class="box" id="3x5y"></div>
@@ -87,7 +94,7 @@
                 <div class="box" id="9x5y"></div>
             </div>
             <div class="linea">
-                <div class="marcador lateral">6</div>
+                <div class="marcador lateral">6y</div>
                 <div class="box" id="1x6y"></div>
                 <div class="box" id="2x6y"></div>
                 <div class="box" id="3x6y"></div>
@@ -99,7 +106,7 @@
                 <div class="box" id="9x6y"></div>
             </div>
             <div class="linea">
-                <div class="marcador lateral">7</div>
+                <div class="marcador lateral">7y</div>
                 <div class="box" id="1x7y"></div>
                 <div class="box" id="2x7y"></div>
                 <div class="box" id="3x7y"></div>
@@ -107,11 +114,11 @@
                 <div class="box" id="5x7y"></div>
                 <div class="box" id="6x7y"></div>
                 <div class="box" id="7x7y"></div>
-                <div class="box" id="7x7y"></div>
                 <div class="box" id="8x7y"></div>
+                <div class="box" id="9x7y"></div>
             </div>
             <div class="linea">
-                <div class="marcador lateral">8</div>
+                <div class="marcador lateral">8y</div>
                 <div class="box" id="1x8y"></div>
                 <div class="box" id="2x8y"></div>
                 <div class="box" id="3x8y"></div>
@@ -123,7 +130,7 @@
                 <div class="box" id="9x8y"></div>
             </div>
             <div class="linea">
-                <div class="marcador lateral">9</div>
+                <div class="marcador lateral">9y</div>
                 <div class="box" id="1x9y"></div>
                 <div class="box" id="2x9y"></div>
                 <div class="box" id="3x9y"></div>
@@ -136,9 +143,9 @@
             </div>
             <div class="footer">
                 <div>
-                    <button id="mostrarEnemigo">Mostrar posiciones</button>
+                    <button id="mostrarEnemigo" class="boton verde">Mostrar posiciones</button>
                     <!-- Disparador Modal -->
-                    <button id="disparar">Disparar</button>
+                    <button id="disparar" class="boton naranjo">Disparar</button>
                     <!-- Modal -->
                     <div id="modalDisparo" class="modal">
                         <!-- Contenido Modal -->
@@ -149,8 +156,8 @@
                                 <small>(ej: 3x2y)</small>
                             </div>
                             <div>
-                                <input type="text" id="coordenadas">
-                                <button id="dispararMisil">Disparar</button>
+                                <input type="text" id="coordenadas" pattern="/[1-9][x][1-9][y]/">
+                                <button id="dispararMisil" class="boton naranjo">Disparar</button>
                             </div>
                         </div>
 
@@ -158,7 +165,19 @@
                 </div>
             </div>
         </div>
-
+        <!-- fin tablero enemigo -->
+        <!-- Marcador -->
+        <div id="puntaje" style="display: none;">
+            <div>
+                <h3>Marcador</h3>
+            </div>
+            <div>
+                <h5>Barcos Eliminados Enemigo: <span id="eliminados">0</span> </h5>
+                <h5>Barcos Perdidos:<span id="perdidos">0</span> </h5>
+            </div>
+        </div>
+        <!-- Fin marcador -->
+        <!-- Tablero del jugador -->
         <div class="tablero jugador">
             <div>
                 <h2>Tu Tablero</h2>
@@ -284,7 +303,33 @@
                 <div class="boxJugador" id="9y9x"></div>
             </div>
         </div>
+        <!-- Fin tablero -->
+        <!-- Indicaciones -->
+        <div class="instrucciones">
+            <h2>Bienvenido/a</h2>
+            <p><strong>Instrucciones:</strong></p>
+            <ul>
+                <li>Debes posicionar tus 10 barcos en el tablero</li>
+                <li>Luego intenta derribar los barcos enemigos!</li>
+                <li>El computador intentara hacer lo mismo, el primero que hunda los 10 barcos del oponente GANA</li>
+            </ul>
+            <p>Buena Suerte!</p>
         </div>
+        <!-- Fin Indicaciones -->
+        <!-- Modal ganador -->
+        <div id="modalGanador" class="modal">
+            <!-- Contenido Modal -->
+            <div id="modalGanadorContent">
+                <div>
+                    <h1 id="tituloGanador"></h1>
+                </div>
+                <div>
+                    <button class="boton verde" id="jugarDeNuevo">Jugar de Nuevo</button>
+                </div>
+            </div>
+        </div>
+        <!-- Fin modal ganador -->
+
     </div>
     <script src="./main.js"></script>
 </body>

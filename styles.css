@@ -1,18 +1,35 @@
+body{
+    font-family: 'Poppins', sans-serif;
+    background-color: rgb(234, 234, 241);
+}
+#titulo{
+    margin-bottom: 0px;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.4rem;
+    text-align: center;
+}
+h1{
+    margin: 0px;
+    padding: 0px;
+}
+h2{
+    text-align: center;
+    font-size: 1.3rem;
+}
 .contenedor-principal{
-    margin: 2rem;
+    margin: 0rem 2rem;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
 }
 .cuadro-blanco{
-    background-color: white;
-    color: white;
-    width: 2vh;
+    background-color: rgb(234, 234, 241);
+    color: rgb(234, 234, 241);
+    width: 3.7vh;
 }
 .tablero{
-    margin-top: 3rem;
-    width: 30rem;
-    height: 35rem;
+    width: 32rem;
+    height: 40rem;
 }
 .linea{
     display: flex;
@@ -22,33 +39,48 @@
 .marcador{
     background-color: rgb(168, 165, 165);
     box-sizing: border-box;
+    margin-right: 1px;
 }
 .superior{
-    width: 7.5vh;
+    width: 7vh;
     background-color: rgb(156, 160, 156);
     text-align: center;
     border: 1px solid rgb(202, 207, 202);
 }
 .lateral{
-    height: 7.5vh;
-    width: 2vh;
+    height: 7vh;
+    width: 3.5vh;
     background-color: rgb(156, 160, 156);
     border: 1px solid white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
 }
 .box{
     background-color: rgb(226, 222, 222);
     box-sizing: border-box;
     border: 1px solid grey;
-    height: 7.5vh;
-    width: 7.5vh;
+    height: 7vh;
+    width: 7vh;
+    cursor: pointer;
+    margin-right: 1px;
+}
+.box:hover{
+    background-color: rgb(171, 182, 190);
     cursor: pointer;
 }
 .boxJugador{
-    background-color: rgb(226, 222, 222);
+    background-color: rgb(150, 174, 196);
     box-sizing: border-box;
     border: 1px solid grey;
-    height: 7.5vh;
-    width: 7.5vh;
+    height: 7vh;
+    width: 7vh;
+    cursor: pointer;
+    margin-right: 1px;
+}
+.boxJugador:hover{
+    background-color: rgb(88, 140, 185);
     cursor: pointer;
 }
 .footer{
@@ -88,9 +120,68 @@ input{
     margin-top: 15px;
     width: 60%;
     background-color: #545a86;
-    border: 2px solid rgb(12, 12, 124);
+    border: 2px solid rgb(11, 11, 87);
     border-radius: 7%;
 }
 #dispararMisil:hover{
     cursor: pointer; 
+}
+.instrucciones{
+    margin-top: 4.5rem;
+    padding: 0rem 1.8rem;
+    border: 2px solid rgb(202, 231, 202);
+    background-color: rgba(145, 229, 201, 0.575);
+    width: 40%;
+    height: 40%;
+}
+#puntaje{
+    margin: 4rem 4rem;
+    height: 10%;
+    padding: 1.5rem;
+    border: 2px solid rgb(197, 231, 210);
+    background-color: rgb(68, 156, 102);
+    color: white;
+    text-align: center;
+}
+.boton{
+    border-style: none;
+    padding: 0.5rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bolder;
+    color: rgb(252, 252, 252);
+}
+.naranjo{
+    background-color: rgb(236, 148, 16);
+}
+.verde{
+    background-color: rgb(68, 156, 102);
+}
+span{
+    padding-left: 5px;
+}
+#modalGanador{
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+#modalGanadorContent{
+    background-color: rgb(236, 148, 16);
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    height: 40%;
+    font-size: 4rem;
+    padding-left: 8rem;
+}
+#jugarDeNuevo{
+    font-size: 2rem;
+    margin-left: 12rem;
 }

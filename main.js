@@ -15,10 +15,13 @@ const perdidos = document.getElementById("perdidos");
 const modalGanador = document.getElementById("modalGanador");
 const tituloGanador = document.getElementById("tituloGanador");
 const jugarDeNuevo = document.getElementById("jugarDeNuevo");
+const mensaje = document.getElementById("mensaje");
 
-let banderaBarcosEnemigos = false;
-let banderaBarcosJugador = false;
+let banderaBarcosEnemigos = "";
+let banderaBarcosJugador = "";
 let bandera = false;
+let perdido = false;
+let hundido = false;
 let misil = "";
 const barcos = [];
 const barcosJugador = [];
@@ -50,6 +53,22 @@ const buscaGanador = (contador) =>{
         }
     }
 };
+/* mensaje que muestra */
+const defineMensaje = (estado) =>{
+    if(disparosRealizados.length === 0){
+        mensaje.style.color = "red";
+        mensaje.innerHTML = "Realiza tu primer disparo!!"
+    }else if(estado === "red"){
+        mensaje.style.color = "red";
+        mensaje.innerHTML = "Has perdido un barco!"
+    }else if(estado == "green"){
+        mensaje.style.color = "green";
+        mensaje.innerHTML = "Hundiste un barco!!"
+    }else{
+        mensaje.style.color = "rgb(234, 234, 241)";
+        mensaje.innerHTML = "d"
+    }
+};
 /* elige una posicion aleatoria para disparar un misil */
 const pcDisparando = () => {
     const posicionY = Math.floor(Math.random() * 9) + 1;
@@ -62,6 +81,7 @@ const pcDisparando = () => {
             contadorBarcosPerdidos += 1;
             perdidos.innerHTML = contadorBarcosPerdidos;
             buscaGanador(contadorBarcosPerdidos)
+            defineMensaje("red")
         } else {
             barcoElegidoPc.style.background = "gray"
         }
@@ -82,8 +102,10 @@ const pinta = (e) => {
             contadorBarcosHundidos += 1;
             eliminados.innerHTML = contadorBarcosHundidos;
             buscaGanador(contadorBarcosHundidos)
+            defineMensaje("green")
         } else {
             objetivo.style.background = "grey";
+            defineMensaje("")
         }
         while (!bandera) {
             pcDisparando()
@@ -133,10 +155,12 @@ const dispararAlBarco = () => {
     if(result){
         if (!disparosRealizados.includes(barcoHundido)) {
             disparosRealizados.push(barcoHundido)
-            if (barcos.includes(barcoHundido)) {
+            if (barcos.includes(barcoHundido.id)) {
                 barcoHundido.style.background = "red";
+                defineMensaje("green")
             } else {
                 barcoHundido.style.background = "grey";
+                defineMensaje("")
             }
             while (!bandera) {
                 pcDisparando()
@@ -160,12 +184,17 @@ const pintaJugador = (e) => {
         tableroEnemigo.style.display = ""
         instrucciones.style.display = "none"
         puntaje.style.display = ""
+        defineMensaje()
     }
 };
 /* recarga la pagina */
 const cargarPagina = () =>{
     location.reload()
-}
+};
+
+
+
+
 
 const eligeBarcos = () => {
     cuadradosJugador.forEach((cuadrado) => {

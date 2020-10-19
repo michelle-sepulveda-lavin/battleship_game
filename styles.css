@@ -5,7 +5,7 @@ body{
 #titulo{
     margin-bottom: 0px;
     font-family: 'Bebas Neue', cursive;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     text-align: center;
 }
 h1{
@@ -14,7 +14,12 @@ h1{
 }
 h2{
     text-align: center;
-    font-size: 1.3rem;
+    font-size: 1rem;
+}
+#mensaje{
+    margin: 0px;
+    padding: 0px;
+    font-size: 24px;
 }
 .contenedor-principal{
     margin: 0rem 2rem;
@@ -29,7 +34,7 @@ h2{
 }
 .tablero{
     width: 32rem;
-    height: 40rem;
+    height: 39rem;
 }
 .linea{
     display: flex;
@@ -131,7 +136,7 @@ input{
     padding: 0rem 1.8rem;
     border: 2px solid rgb(202, 231, 202);
     background-color: rgba(145, 229, 201, 0.575);
-    width: 40%;
+    width: 50%;
     height: 40%;
 }
 #puntaje{

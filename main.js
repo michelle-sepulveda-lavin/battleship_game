@@ -22,9 +22,11 @@ const mensaje = document.getElementById("mensaje");
 const opcionesJuego = document.getElementById("opcionesJuego")
 const opcionLanchas = document.getElementById("opcionSoloLanchas");
 const opcionFullBarcos = document.getElementById("opcionFullBarcos");
+const eleccionDeBarcos = document.getElementById("eleccionBarcos");
 const detalleBarcos = document.getElementById("barcos");
 const horizontal = document.getElementById("horizontal");
 const vertical = document.getElementById("vertical");
+const direccion = document.getElementById("direccion");
 
 let banderaBarcosEnemigos = "";
 let banderaBarcosJugador = "";
@@ -32,6 +34,7 @@ let modoJuego = "";
 let bandera = false;
 let perdido = false;
 let hundido = false;
+let posicionBarcos = false;
 let misil = "";
 const barcos = [];
 const barcosJugador = [];
@@ -77,15 +80,15 @@ const lecturaMatriz = () => {
     }
 };
 /* traduccion matrizEnemigo */
-const traduccion = (tipoMatriz, array) =>{
+const traduccion = (tipoMatriz, array) => {
     for (let i = 0; i < tipoMatriz.length; i++) {
         for (let j = 0; j < tipoMatriz[i].length; j++) {
             if (tipoMatriz[i][j] === 1) {
                 let idPosicion = ""
-                if(tipoMatriz === matrizEnemigo){
-                    idPosicion = `${j+1}x${i+1}y`
-                }else if(tipoMatriz === matriz){
-                    idPosicion = `${i+1}y${j+1}x`
+                if (tipoMatriz === matrizEnemigo) {
+                    idPosicion = `${j + 1}x${i + 1}y`
+                } else if (tipoMatriz === matriz) {
+                    idPosicion = `${i + 1}y${j + 1}x`
                 }
                 array.push(idPosicion)
             }
@@ -104,75 +107,170 @@ const posicionesAlrededor = (coordenada, tipoBarco, tipoLinea, usuario, tipoMatr
     } else if (usuario === "pc") {
         y = coordenada[1]
         x = coordenada[0]
-
     }
     if (tipoBarco === "buque") {
-        if (tipoLinea === "inferior") {
-            tipoMatriz[y + 1][x] = 2
-            tipoMatriz[y + 1][x + 1] = 2
-            tipoMatriz[y + 1][x + 2] = 2
-            tipoMatriz[y + 1][x + 3] = 2
-        } else if (tipoLinea === "superior") {
-            tipoMatriz[y - 1][x] = 2
-            tipoMatriz[y - 1][x + 1] = 2
-            tipoMatriz[y - 1][x + 2] = 2
-            tipoMatriz[y - 1][x + 3] = 2
-        } else if (tipoLinea === "izquierda") {
-            tipoMatriz[y - 1][x - 1] = 2
-            tipoMatriz[y][x - 1] = 2
-            tipoMatriz[y + 1][x - 1] = 2
-        } else if (tipoLinea === "derecha") {
-            tipoMatriz[y - 1][x + 4] = 2
-            tipoMatriz[y][x + 4] = 2
-            tipoMatriz[y + 1][x + 4] = 2
+        switch (tipoLinea) {
+            case "inferior":
+                tipoMatriz[y + 1][x] = 2
+                tipoMatriz[y + 1][x + 1] = 2
+                tipoMatriz[y + 1][x + 2] = 2
+                tipoMatriz[y + 1][x + 3] = 2
+                break
+            case "inferiorV":
+                tipoMatriz[y + 4][x] = 2
+                tipoMatriz[y + 4][x - 1] = 2
+                tipoMatriz[y + 4][x + 1] = 2
+                break
+            case "superior":
+                tipoMatriz[y - 1][x] = 2
+                tipoMatriz[y - 1][x + 1] = 2
+                tipoMatriz[y - 1][x + 2] = 2
+                tipoMatriz[y - 1][x + 3] = 2
+                break
+            case "superiorV":
+                tipoMatriz[y - 1][x] = 2
+                tipoMatriz[y - 1][x - 1] = 2
+                tipoMatriz[y - 1][x + 1] = 2
+                break
+            case "izquierda":
+                tipoMatriz[y - 1][x - 1] = 2
+                tipoMatriz[y][x - 1] = 2
+                tipoMatriz[y + 1][x - 1] = 2
+                break
+            case "izquierdaV":
+                tipoMatriz[y][x - 1] = 2
+                tipoMatriz[y + 1][x - 1] = 2
+                tipoMatriz[y + 2][x - 1] = 2
+                tipoMatriz[y + 3][x - 1] = 2
+                break
+            case "derecha":
+                tipoMatriz[y - 1][x + 4] = 2
+                tipoMatriz[y][x + 4] = 2
+                tipoMatriz[y + 1][x + 4] = 2
+                break
+            case "derechaV":
+                tipoMatriz[y][x + 1] = 2
+                tipoMatriz[y + 1][x + 1] = 2
+                tipoMatriz[y + 2][x + 1] = 2
+                tipoMatriz[y + 3][x + 1] = 2
+                break
         }
     } else if (tipoBarco === "submarino") {
-        if (tipoLinea === "inferior") {
-            tipoMatriz[y + 1][x] = 2
-            tipoMatriz[y + 1][x + 1] = 2
-            tipoMatriz[y + 1][x + 2] = 2
-        } else if (tipoLinea === "superior") {
-            tipoMatriz[y - 1][x] = 2
-            tipoMatriz[y - 1][x + 1] = 2
-            tipoMatriz[y - 1][x + 2] = 2
-        } else if (tipoLinea === "izquierda") {
-            tipoMatriz[y - 1][x - 1] = 2
-            tipoMatriz[y][x - 1] = 2
-            tipoMatriz[y + 1][x - 1] = 2
-        } else if (tipoLinea === "derecha") {
-            tipoMatriz[y - 1][x + 3] = 2
-            tipoMatriz[y][x + 3] = 2
-            tipoMatriz[y + 1][x + 3] = 2
+        switch (tipoLinea) {
+            case "inferior":
+                tipoMatriz[y + 1][x] = 2
+                tipoMatriz[y + 1][x + 1] = 2
+                tipoMatriz[y + 1][x + 2] = 2
+                break
+            case "inferiorV":
+                tipoMatriz[y + 3][x] = 2
+                tipoMatriz[y + 3][x - 1] = 2
+                tipoMatriz[y + 3][x + 1] = 2
+                break
+            case "superior":
+                tipoMatriz[y - 1][x] = 2
+                tipoMatriz[y - 1][x + 1] = 2
+                tipoMatriz[y - 1][x + 2] = 2
+                break
+            case "superiorV":
+                tipoMatriz[y - 1][x] = 2
+                tipoMatriz[y - 1][x - 1] = 2
+                tipoMatriz[y - 1][x + 1] = 2
+                break
+            case "izquierda":
+                tipoMatriz[y - 1][x - 1] = 2
+                tipoMatriz[y][x - 1] = 2
+                tipoMatriz[y + 1][x - 1] = 2
+                break
+            case "izquierdaV":
+                tipoMatriz[y][x - 1] = 2
+                tipoMatriz[y + 1][x - 1] = 2
+                tipoMatriz[y + 2][x - 1] = 2
+                break
+            case "derecha":
+                tipoMatriz[y - 1][x + 3] = 2
+                tipoMatriz[y][x + 3] = 2
+                tipoMatriz[y + 1][x + 3] = 2
+                break
+            case "derechaV":
+                tipoMatriz[y][x + 1] = 2
+                tipoMatriz[y + 1][x + 1] = 2
+                tipoMatriz[y + 2][x + 1] = 2
+                break
         }
     } else if (tipoBarco === "crucero") {
-        if (tipoLinea === "inferior") {
-            tipoMatriz[y + 1][x] = 2
-            tipoMatriz[y + 1][x + 1] = 2
-        } else if (tipoLinea === "superior") {
-            tipoMatriz[y - 1][x] = 2
-            tipoMatriz[y - 1][x + 1] = 2
-        } else if (tipoLinea === "izquierda") {
-            tipoMatriz[y - 1][x - 1] = 2
-            tipoMatriz[y][x - 1] = 2
-            tipoMatriz[y + 1][x - 1] = 2
-        } else if (tipoLinea === "derecha") {
-            tipoMatriz[y - 1][x + 2] = 2
-            tipoMatriz[y][x + 2] = 2
-            tipoMatriz[y + 1][x + 2] = 2
+        switch (tipoLinea) {
+            case "inferior":
+                tipoMatriz[y + 1][x] = 2
+                tipoMatriz[y + 1][x + 1] = 2
+                break
+            case "inferiorV":
+                tipoMatriz[y + 2][x] = 2
+                tipoMatriz[y + 2][x - 1] = 2
+                tipoMatriz[y + 2][x + 1] = 2
+                break
+            case "superior":
+                tipoMatriz[y - 1][x] = 2
+                tipoMatriz[y - 1][x + 1] = 2
+                break
+            case "superiorV":
+                tipoMatriz[y - 1][x] = 2
+                tipoMatriz[y - 1][x - 1] = 2
+                tipoMatriz[y - 1][x + 1] = 2
+                break
+            case "izquierda":
+                tipoMatriz[y - 1][x - 1] = 2
+                tipoMatriz[y][x - 1] = 2
+                tipoMatriz[y + 1][x - 1] = 2
+                break
+            case "izquierdaV":
+                tipoMatriz[y][x - 1] = 2
+                tipoMatriz[y + 1][x - 1] = 2
+                break
+            case "derecha":
+                tipoMatriz[y - 1][x + 2] = 2
+                tipoMatriz[y][x + 2] = 2
+                tipoMatriz[y + 1][x + 2] = 2
+                break
+            case "derechaV":
+                tipoMatriz[y][x + 1] = 2
+                tipoMatriz[y + 1][x + 1] = 2
+                break
         }
     } else if (tipoBarco === "lancha") {
-        if (tipoLinea === "inferior") {
-            tipoMatriz[y + 1][x] = 2
-        } else if (tipoLinea === "superior") {
-            tipoMatriz[y - 1][x] = 2
-        } else if (tipoLinea === "izquierda") {
-            tipoMatriz[y - 1][x - 1] = 2
-            tipoMatriz[y][x - 1] = 2
-            tipoMatriz[y + 1][x - 1] = 2
-        } else if (tipoLinea === "derecha") {
-            tipoMatriz[y - 1][x + 1] = 2
-            tipoMatriz[y][x + 1] = 2
-            tipoMatriz[y + 1][x + 1] = 2
+        switch (tipoLinea) {
+            case "inferior":
+                tipoMatriz[y + 1][x] = 2
+                break
+            case "inferiorV":
+                tipoMatriz[y + 1][x] = 2
+                tipoMatriz[y + 1][x - 1] = 2
+                tipoMatriz[y + 1][x + 1] = 2
+                break
+            case "superior":
+                tipoMatriz[y - 1][x] = 2
+                break
+            case "superiorV":
+                tipoMatriz[y - 1][x] = 2
+                tipoMatriz[y - 1][x - 1] = 2
+                tipoMatriz[y - 1][x + 1] = 2
+                break
+            case "izquierda":
+                tipoMatriz[y - 1][x - 1] = 2
+                tipoMatriz[y][x - 1] = 2
+                tipoMatriz[y + 1][x - 1] = 2
+                break
+            case "izquierdaV":
+                tipoMatriz[y][x - 1] = 2
+                break
+            case "derecha":
+                tipoMatriz[y - 1][x + 1] = 2
+                tipoMatriz[y][x + 1] = 2
+                tipoMatriz[y + 1][x + 1] = 2
+                break
+            case "derechaV":
+                tipoMatriz[y][x + 1] = 2
+                break
         }
     }
 }
@@ -184,456 +282,270 @@ const creadorCoordenada = () => {
     return coordenadas
 
 }
-/* crea un buque */
-const creadorBuque = (e, x, y, usuario, tipoMatriz) => {
-
-    if (x + 3 < 8) {
-        tipoMatriz[y][x] = 1
-        tipoMatriz[y][x + 1] = 1
-        tipoMatriz[y][x + 2] = 1
-        tipoMatriz[y][x + 3] = 1
-        if (usuario === "jugador") {
-            lecturaMatriz();
-        }
-        if (tipoMatriz[y][x - 1] == undefined) {
-            if (tipoMatriz[y - 1] == undefined) {
-                if (usuario === "jugador") {
-                    posicionesAlrededor(e, "buque", "inferior", "jugador", matriz)
-                } else if (usuario === "pc") {
-                    posicionesAlrededor(e, "buque", "inferior", "pc", matrizEnemigo)
-                }
-                tipoMatriz[y][x + 4] = 2
-                tipoMatriz[y + 1][x + 4] = 2
-            } else if (tipoMatriz[y + 1] == undefined) {
-                if (usuario === "jugador") {
-                    posicionesAlrededor(e, "buque", "superior", "jugador", matriz)
-                } else if (usuario === "pc") {
-                    posicionesAlrededor(e, "buque", "superior", "pc", matrizEnemigo)
-                }
-                tipoMatriz[y - 1][x + 4] = 2
-                tipoMatriz[y][x + 4] = 2
-            } else if (tipoMatriz[y - 1][x] != undefined && tipoMatriz[y + 1][x] != undefined) {
-                if (usuario === "jugador") {
-                    posicionesAlrededor(e, "buque", "superior", "jugador", matriz)
-                    posicionesAlrededor(e, "buque", "inferior", "jugador", matriz)
-                    posicionesAlrededor(e, "buque", "derecha", "jugador", matriz)
-                } else if (usuario === "pc") {
-                    posicionesAlrededor(e, "buque", "superior", "pc", matrizEnemigo)
-                    posicionesAlrededor(e, "buque", "inferior", "pc", matrizEnemigo)
-                    posicionesAlrededor(e, "buque", "derecha", "pc", matrizEnemigo)
-                }
-
-            }
-        } else if (tipoMatriz[y][x - 1] != undefined && tipoMatriz[y - 1] == undefined) {
-            if (usuario === "jugador") {
-                posicionesAlrededor(e, "buque", "inferior", "jugador", matriz)
-            } else if (usuario === "pc") {
-                posicionesAlrededor(e, "buque", "inferior", "pc", matrizEnemigo)
-            }
-            tipoMatriz[y][x + 4] = 2
-            tipoMatriz[y + 1][x + 4] = 2
-            tipoMatriz[y][x - 1] = 2
-            tipoMatriz[y + 1][x - 1] = 2
-        } else if (tipoMatriz[y][x - 1] != undefined && tipoMatriz[y + 1] == undefined) {
-            if (usuario === "jugador") {
-                posicionesAlrededor(e, "buque", "superior", "jugador", matriz)
-            } else if (usuario === "pc") {
-                posicionesAlrededor(e, "buque", "superior", "pc", matrizEnemigo)
-            }
-            tipoMatriz[y - 1][x + 4] = 2
-            tipoMatriz[y][x + 4] = 2
-            tipoMatriz[y - 1][x - 1] = 2
-            tipoMatriz[y][x - 1] = 2
-        } else {
-            if (usuario === "jugador") {
-                posicionesAlrededor(e, "buque", "superior", "jugador", matriz)
-                posicionesAlrededor(e, "buque", "inferior", "jugador", matriz)
-                posicionesAlrededor(e, "buque", "derecha", "jugador", matriz)
-                posicionesAlrededor(e, "buque", "izquierda", "jugador", matriz)
-            } else if (usuario === "pc") {
-                posicionesAlrededor(e, "buque", "superior", "pc", matrizEnemigo)
-                posicionesAlrededor(e, "buque", "inferior", "pc", matrizEnemigo)
-                posicionesAlrededor(e, "buque", "derecha", "pc", matrizEnemigo)
-                posicionesAlrededor(e, "buque", "izquierda", "pc", matrizEnemigo)
-            }
-        }
-        if (usuario === "jugador") {
-            contadorBarcosCreados += 1
-        }
-        return "yes"
-    } else if (x + 3 == 8) {
-        tipoMatriz[y][x] = 1
-        tipoMatriz[y][x + 1] = 1
-        tipoMatriz[y][x + 2] = 1
-        tipoMatriz[y][x + 3] = 1
-        if (usuario === "jugador") {
-            lecturaMatriz();
-        }
-        if (tipoMatriz[y - 1] == undefined) {
-            if (usuario === "jugador") {
-                posicionesAlrededor(e, "buque", "inferior", "jugador", matriz)
-            } else if (usuario === "pc") {
-                posicionesAlrededor(e, "buque", "inferior", "pc", matrizEnemigo)
-            }
-            tipoMatriz[y][x - 1] = 2
-            tipoMatriz[y + 1][x - 1] = 2
-        } else if (tipoMatriz[y + 1] == undefined) {
-            if (usuario === "jugador") {
-                posicionesAlrededor(e, "buque", "superior", "jugador", matriz)
-            } else if (usuario === "pc") {
-                posicionesAlrededor(e, "buque", "superior", "pc", matrizEnemigo)
-            }
-            tipoMatriz[y - 1][x - 1] = 2
-            tipoMatriz[y][x - 1] = 2
-        } else if (tipoMatriz[y - 1][x] != undefined && tipoMatriz[y + 1][x] != undefined) {
-            if (usuario === "jugador") {
-                posicionesAlrededor(e, "buque", "superior", "jugador", matriz)
-                posicionesAlrededor(e, "buque", "inferior", "jugador", matriz)
-                posicionesAlrededor(e, "buque", "izquierda", "jugador", matriz)
-            } else if (usuario === "pc") {
-                posicionesAlrededor(e, "buque", "superior", "pc", matrizEnemigo)
-                posicionesAlrededor(e, "buque", "inferior", "pc", matrizEnemigo)
-                posicionesAlrededor(e, "buque", "izquierda", "pc", matrizEnemigo)
-            }
-        }
-        if (usuario === "jugador") {
-            contadorBarcosCreados += 1
-        }
-        return "yes"
-    }
-    /* console.log(matriz) */
-}
-/* crea un submarino */
-const creadorSubmarino = (e, x, y, usuario, tipoMatriz) => {
-    if (x + 2 < 8) {
-        if (tipoMatriz[y][x] == 0 && tipoMatriz[y][x + 3] == 0) {
+/* crea barcos segun el tipo que se especifique */
+const creadorBarcos = (e, x, y, numero, usuario, barco, tipoMatriz, orientacion) => {
+    if (orientacion === false) {
+        if (x + numero < 8) {
             tipoMatriz[y][x] = 1
-            tipoMatriz[y][x + 1] = 1
-            tipoMatriz[y][x + 2] = 1
-            lecturaMatriz();
+            if (numero == 1) {
+                tipoMatriz[y][x + 1] = 1
+            } else if (numero == 2) {
+                tipoMatriz[y][x + 1] = 1
+                tipoMatriz[y][x + 2] = 1
+            } else if (numero == 3) {
+                tipoMatriz[y][x + 1] = 1
+                tipoMatriz[y][x + 2] = 1
+                tipoMatriz[y][x + 3] = 1
+            }
+            if (usuario === "jugador") {
+                lecturaMatriz();
+            }
             if (tipoMatriz[y][x - 1] == undefined) {
                 if (tipoMatriz[y - 1] == undefined) {
                     if (usuario === "jugador") {
-                        posicionesAlrededor(e, "submarino", "inferior", "jugador", matriz)
+                        posicionesAlrededor(e, barco, "inferior", "jugador", matriz)
                     } else if (usuario === "pc") {
-                        posicionesAlrededor(e, "submarino", "inferior", "pc", matrizEnemigo)
+                        posicionesAlrededor(e, barco, "inferior", "pc", matrizEnemigo)
                     }
-                    tipoMatriz[y][x + 3] = 2
-                    tipoMatriz[y + 1][x + 3] = 2
+                    tipoMatriz[y][x + (numero + 1)] = 2
+                    tipoMatriz[y + 1][x + (numero + 1)] = 2
                 } else if (tipoMatriz[y + 1] == undefined) {
                     if (usuario === "jugador") {
-                        posicionesAlrededor(e, "submarino", "superior", "jugador", matriz)
+                        posicionesAlrededor(e, barco, "superior", "jugador", matriz)
                     } else if (usuario === "pc") {
-                        posicionesAlrededor(e, "submarino", "superior", "pc", matrizEnemigo)
+                        posicionesAlrededor(e, barco, "superior", "pc", matrizEnemigo)
                     }
-                    tipoMatriz[y - 1][x + 3] = 2
-                    tipoMatriz[y][x + 3] = 2
+                    tipoMatriz[y - 1][x + (numero + 1)] = 2
+                    tipoMatriz[y][x + (numero + 1)] = 2
                 } else if (tipoMatriz[y - 1][x] != undefined && tipoMatriz[y + 1][x] != undefined) {
                     if (usuario === "jugador") {
-                        posicionesAlrededor(e, "submarino", "superior", "jugador", matriz)
-                        posicionesAlrededor(e, "submarino", "inferior", "jugador", matriz)
-                        posicionesAlrededor(e, "submarino", "derecha", "jugador", matriz)
+                        posicionesAlrededor(e, barco, "superior", "jugador", matriz)
+                        posicionesAlrededor(e, barco, "inferior", "jugador", matriz)
+                        posicionesAlrededor(e, barco, "derecha", "jugador", matriz)
                     } else if (usuario === "pc") {
-                        posicionesAlrededor(e, "submarino", "superior", "pc", matrizEnemigo)
-                        posicionesAlrededor(e, "submarino", "inferior", "pc", matrizEnemigo)
-                        posicionesAlrededor(e, "submarino", "derecha", "pc", matrizEnemigo)
+                        posicionesAlrededor(e, barco, "superior", "pc", matrizEnemigo)
+                        posicionesAlrededor(e, barco, "inferior", "pc", matrizEnemigo)
+                        posicionesAlrededor(e, barco, "derecha", "pc", matrizEnemigo)
                     }
+
                 }
             } else if (tipoMatriz[y][x - 1] != undefined && tipoMatriz[y - 1] == undefined) {
                 if (usuario === "jugador") {
-                    posicionesAlrededor(e, "submarino", "inferior", "jugador", matriz)
+                    posicionesAlrededor(e, barco, "inferior", "jugador", matriz)
                 } else if (usuario === "pc") {
-                    posicionesAlrededor(e, "submarino", "inferior", "pc", matrizEnemigo)
+                    posicionesAlrededor(e, barco, "inferior", "pc", matrizEnemigo)
                 }
-                tipoMatriz[y][x + 3] = 2
-                tipoMatriz[y + 1][x + 3] = 2
+                tipoMatriz[y][x + (numero + 1)] = 2
+                tipoMatriz[y + 1][x + (numero + 1)] = 2
                 tipoMatriz[y][x - 1] = 2
                 tipoMatriz[y + 1][x - 1] = 2
             } else if (tipoMatriz[y][x - 1] != undefined && tipoMatriz[y + 1] == undefined) {
                 if (usuario === "jugador") {
-                    posicionesAlrededor(e, "submarino", "superior", "jugador", matriz)
+                    posicionesAlrededor(e, barco, "superior", "jugador", matriz)
                 } else if (usuario === "pc") {
-                    posicionesAlrededor(e, "submarino", "superior", "pc", matrizEnemigo)
+                    posicionesAlrededor(e, barco, "superior", "pc", matrizEnemigo)
                 }
-                tipoMatriz[y - 1][x + 3] = 2
-                tipoMatriz[y][x + 3] = 2
+                tipoMatriz[y - 1][x + (numero + 1)] = 2
+                tipoMatriz[y][x + (numero + 1)] = 2
                 tipoMatriz[y - 1][x - 1] = 2
                 tipoMatriz[y][x - 1] = 2
             } else {
                 if (usuario === "jugador") {
-                    posicionesAlrededor(e, "submarino", "superior", "jugador", matriz)
-                    posicionesAlrededor(e, "submarino", "inferior", "jugador", matriz)
-                    posicionesAlrededor(e, "submarino", "derecha", "jugador", matriz)
-                    posicionesAlrededor(e, "submarino", "izquierda", "jugador", matriz)
+                    posicionesAlrededor(e, barco, "superior", "jugador", matriz)
+                    posicionesAlrededor(e, barco, "inferior", "jugador", matriz)
+                    posicionesAlrededor(e, barco, "derecha", "jugador", matriz)
+                    posicionesAlrededor(e, barco, "izquierda", "jugador", matriz)
                 } else if (usuario === "pc") {
-                    posicionesAlrededor(e, "submarino", "superior", "pc", matrizEnemigo)
-                    posicionesAlrededor(e, "submarino", "inferior", "pc", matrizEnemigo)
-                    posicionesAlrededor(e, "submarino", "derecha", "pc", matrizEnemigo)
-                    posicionesAlrededor(e, "submarino", "izquierda", "pc", matrizEnemigo)
+                    posicionesAlrededor(e, barco, "superior", "pc", matrizEnemigo)
+                    posicionesAlrededor(e, barco, "inferior", "pc", matrizEnemigo)
+                    posicionesAlrededor(e, barco, "derecha", "pc", matrizEnemigo)
+                    posicionesAlrededor(e, barco, "izquierda", "pc", matrizEnemigo)
                 }
             }
             if (usuario === "jugador") {
                 contadorBarcosCreados += 1
             }
-        }
-    } else if (x + 2 == 8) {
-        if (tipoMatriz[y][x] == 0) {
+            return "yes"
+        } else if (x + numero == 8) {
             tipoMatriz[y][x] = 1
-            tipoMatriz[y][x + 1] = 1
-            tipoMatriz[y][x + 2] = 1
-            lecturaMatriz();
+            if (numero == 1) {
+                tipoMatriz[y][x + 1] = 1
+            } else if (numero == 2) {
+                tipoMatriz[y][x + 1] = 1
+                tipoMatriz[y][x + 2] = 1
+            } else if (numero == 3) {
+                tipoMatriz[y][x + 1] = 1
+                tipoMatriz[y][x + 2] = 1
+                tipoMatriz[y][x + 3] = 1
+            }
+            if (usuario === "jugador") {
+                lecturaMatriz();
+            }
             if (tipoMatriz[y - 1] == undefined) {
                 if (usuario === "jugador") {
-                    posicionesAlrededor(e, "submarino", "inferior", "jugador", matriz)
+                    posicionesAlrededor(e, barco, "inferior", "jugador", matriz)
                 } else if (usuario === "pc") {
-                    posicionesAlrededor(e, "submarino", "inferior", "pc", matrizEnemigo)
+                    posicionesAlrededor(e, barco, "inferior", "pc", matrizEnemigo)
                 }
                 tipoMatriz[y][x - 1] = 2
                 tipoMatriz[y + 1][x - 1] = 2
             } else if (tipoMatriz[y + 1] == undefined) {
                 if (usuario === "jugador") {
-                    posicionesAlrededor(e, "submarino", "superior", "jugador", matriz)
+                    posicionesAlrededor(e, barco, "superior", "jugador", matriz)
                 } else if (usuario === "pc") {
-                    posicionesAlrededor(e, "submarino", "superior", "pc", matrizEnemigo)
+                    posicionesAlrededor(e, barco, "superior", "pc", matrizEnemigo)
                 }
                 tipoMatriz[y - 1][x - 1] = 2
                 tipoMatriz[y][x - 1] = 2
             } else if (tipoMatriz[y - 1][x] != undefined && tipoMatriz[y + 1][x] != undefined) {
                 if (usuario === "jugador") {
-                    posicionesAlrededor(e, "submarino", "superior", "jugador", matriz)
-                    posicionesAlrededor(e, "submarino", "inferior", "jugador", matriz)
-                    posicionesAlrededor(e, "submarino", "izquierda", "jugador", matriz)
+                    posicionesAlrededor(e, barco, "superior", "jugador", matriz)
+                    posicionesAlrededor(e, barco, "inferior", "jugador", matriz)
+                    posicionesAlrededor(e, barco, "izquierda", "jugador", matriz)
                 } else if (usuario === "pc") {
-                    posicionesAlrededor(e, "submarino", "superior", "pc", matrizEnemigo)
-                    posicionesAlrededor(e, "submarino", "inferior", "pc", matrizEnemigo)
-                    posicionesAlrededor(e, "submarino", "izquierda", "pc", matrizEnemigo)
+                    posicionesAlrededor(e, barco, "superior", "pc", matrizEnemigo)
+                    posicionesAlrededor(e, barco, "inferior", "pc", matrizEnemigo)
+                    posicionesAlrededor(e, barco, "izquierda", "pc", matrizEnemigo)
                 }
             }
             if (usuario === "jugador") {
                 contadorBarcosCreados += 1
             }
+            return "yes"
         }
-    }
-}
-/* crea un crucero */
-const creadorCrucero = (e, x, y, usuario, tipoMatriz) => {
-    if (x + 1 < 8) {
-        if (tipoMatriz[y][x] == 0 && tipoMatriz[y][x + 1] == 0) {
+    } else if (orientacion === true) {
+        if (y + numero < 8) {
             tipoMatriz[y][x] = 1
-            tipoMatriz[y][x + 1] = 1
-            lecturaMatriz();
-            if (tipoMatriz[y][x - 1] == undefined) {
-                if (tipoMatriz[y - 1] == undefined) {
-                    if (usuario === "jugador") {
-                        posicionesAlrededor(e, "crucero", "inferior", "jugador", matriz)
-                    } else if (usuario === "pc") {
-                        posicionesAlrededor(e, "crucero", "inferior", "pc", matrizEnemigo)
-                    }
-                    tipoMatriz[y][x + 2] = 2
-                    tipoMatriz[y + 1][x + 2] = 2
-                } else if (tipoMatriz[y + 1] == undefined) {
-                    if (usuario === "jugador") {
-                        posicionesAlrededor(e, "crucero", "superior", "jugador", matriz)
-                    } else if (usuario === "pc") {
-                        posicionesAlrededor(e, "crucero", "superior", "pc", matrizEnemigo)
-                    }
-                    tipoMatriz[y - 1][x + 2] = 2
-                    tipoMatriz[y][x + 2] = 2
-                } else if (tipoMatriz[y - 1][x] != undefined && tipoMatriz[y + 1][x] != undefined) {
-                    if (usuario === "jugador") {
-                        posicionesAlrededor(e, "crucero", "superior", "jugador", matriz)
-                        posicionesAlrededor(e, "crucero", "inferior", "jugador", matriz)
-                        posicionesAlrededor(e, "crucero", "derecha", "jugador", matriz)
-                    } else if (usuario === "pc") {
-                        posicionesAlrededor(e, "crucero", "superior", "pc", matrizEnemigo)
-                        posicionesAlrededor(e, "crucero", "inferior", "pc", matrizEnemigo)
-                        posicionesAlrededor(e, "crucero", "derecha", "pc", matrizEnemigo)
-                    }
-                }
-            } else if (tipoMatriz[y][x - 1] != undefined && tipoMatriz[y - 1] == undefined) {
-                if (usuario === "jugador") {
-                    posicionesAlrededor(e, "crucero", "inferior", "jugador", matriz)
-                } else if (usuario === "pc") {
-                    posicionesAlrededor(e, "crucero", "inferior", "pc", matrizEnemigo)
-                }
-                tipoMatriz[y][x + 2] = 2
-                tipoMatriz[y + 1][x + 2] = 2
-                tipoMatriz[y][x - 1] = 2
-                tipoMatriz[y + 1][x - 1] = 2
-            } else if (tipoMatriz[y][x - 1] != undefined && tipoMatriz[y + 1] == undefined) {
-                if (usuario === "jugador") {
-                    posicionesAlrededor(e, "crucero", "superior", "jugador", matriz)
-                } else if (usuario === "pc") {
-                    posicionesAlrededor(e, "crucero", "superior", "pc", matrizEnemigo)
-                }
-                tipoMatriz[y - 1][x + 2] = 2
-                tipoMatriz[y][x + 2] = 2
-                tipoMatriz[y - 1][x - 1] = 2
-                tipoMatriz[y][x - 1] = 2
-            } else {
-                if (usuario === "jugador") {
-                    posicionesAlrededor(e, "crucero", "superior", "jugador", matriz)
-                    posicionesAlrededor(e, "crucero", "inferior", "jugador", matriz)
-                    posicionesAlrededor(e, "crucero", "derecha", "jugador", matriz)
-                    posicionesAlrededor(e, "crucero", "izquierda", "jugador", matriz)
-                } else if (usuario === "pc") {
-                    posicionesAlrededor(e, "crucero", "superior", "pc", matrizEnemigo)
-                    posicionesAlrededor(e, "crucero", "inferior", "pc", matrizEnemigo)
-                    posicionesAlrededor(e, "crucero", "derecha", "pc", matrizEnemigo)
-                    posicionesAlrededor(e, "crucero", "izquierda", "pc", matrizEnemigo)
-                }
+            if (numero == 1) {
+                tipoMatriz[y + 1][x] = 1
+            } else if (numero == 2) {
+                tipoMatriz[y + 1][x] = 1
+                tipoMatriz[y + 2][x] = 1
+            } else if (numero == 3) {
+                tipoMatriz[y + 1][x] = 1
+                tipoMatriz[y + 2][x] = 1
+                tipoMatriz[y + 3][x] = 1
             }
             if (usuario === "jugador") {
-                contadorBarcosCreados += 1
+                lecturaMatriz();
             }
-        }
-    } else if (x + 1 == 8) {
-        if (tipoMatriz[y][x] == 0) {
-            tipoMatriz[y][x] = 1
-            tipoMatriz[y][x + 1] = 1
-            lecturaMatriz();
             if (tipoMatriz[y - 1] == undefined) {
-                if (usuario === "jugador") {
-                    posicionesAlrededor(e, "crucero", "inferior", "jugador", matriz)
-                } else if (usuario === "pc") {
-                    posicionesAlrededor(e, "crucero", "inferior", "pc", matrizEnemigo)
-                }
-                tipoMatriz[y][x - 1] = 2
-                tipoMatriz[y + 1][x - 1] = 2
-            } else if (tipoMatriz[y + 1] == undefined) {
-                if (usuario === "jugador") {
-                    posicionesAlrededor(e, "crucero", "superior", "jugador", matriz)
-                } else if (usuario === "pc") {
-                    posicionesAlrededor(e, "crucero", "superior", "pc", matrizEnemigo)
-                }
-                tipoMatriz[y - 1][x - 1] = 2
-                tipoMatriz[y][x - 1] = 2
-            } else if (tipoMatriz[y - 1][x] != undefined && tipoMatriz[y + 1][x] != undefined) {
-                if (usuario === "jugador") {
-                    posicionesAlrededor(e, "crucero", "superior", "jugador", matriz)
-                    posicionesAlrededor(e, "crucero", "inferior", "jugador", matriz)
-                    posicionesAlrededor(e, "crucero", "izquierda", "jugador", matriz)
-                } else if (usuario === "pc") {
-                    posicionesAlrededor(e, "crucero", "superior", "pc", matrizEnemigo)
-                    posicionesAlrededor(e, "crucero", "inferior", "pc", matrizEnemigo)
-                    posicionesAlrededor(e, "crucero", "izquierda", "pc", matrizEnemigo)
-                }
-            }
-            if (usuario === "jugador") {
-                contadorBarcosCreados += 1
-            }
-        }
-    }
-}
-/* crea una lancha */
-const creadorLancha = (e, x, y, usuario, tipoMatriz) => {
-    if (x < 8) {
-        if (tipoMatriz[y][x] == 0) {
-            tipoMatriz[y][x] = 1
-            lecturaMatriz();
-            if (tipoMatriz[y][x - 1] == undefined) {
-                if (tipoMatriz[y - 1] == undefined) {
+                if (tipoMatriz[y][x - 1] == undefined) {
                     if (usuario === "jugador") {
-                        posicionesAlrededor(e, "lancha", "inferior", "jugador", matriz)
+                        posicionesAlrededor(e, barco, "derechaV", "jugador", matriz)
                     } else if (usuario === "pc") {
-                        posicionesAlrededor(e, "lancha", "inferior", "pc", matrizEnemigo)
+                        posicionesAlrededor(e, barco, "derechaV", "pc", matrizEnemigo)
                     }
-                    tipoMatriz[y][x + 1] = 2
-                    tipoMatriz[y + 1][x + 1] = 2
-                } else if (tipoMatriz[y + 1] == undefined) {
+                    tipoMatriz[y + (numero + 1)][x] = 2
+                    tipoMatriz[y + (numero + 1)][x + 1] = 2
+                } else if (tipoMatriz[y][x + 1] == undefined) {
                     if (usuario === "jugador") {
-                        posicionesAlrededor(e, "lancha", "superior", "jugador", matriz)
+                        posicionesAlrededor(e, barco, "izquierdaV", "jugador", matriz)
                     } else if (usuario === "pc") {
-                        posicionesAlrededor(e, "lancha", "superior", "pc", matrizEnemigo)
+                        posicionesAlrededor(e, barco, "izquierdaV", "pc", matrizEnemigo)
                     }
-                    tipoMatriz[y - 1][x + 1] = 2
-                    tipoMatriz[y][x + 1] = 2
-                } else if (tipoMatriz[y - 1][x] != undefined && tipoMatriz[y + 1][x] != undefined) {
+                    tipoMatriz[y + (numero + 1)][x - 1] = 2
+                    tipoMatriz[y + (numero + 1)][x] = 2
+                } else if (tipoMatriz[y][x - 1] != undefined && tipoMatriz[y][x + 1] != undefined) {
                     if (usuario === "jugador") {
-                        posicionesAlrededor(e, "lancha", "superior", "jugador", matriz)
-                        posicionesAlrededor(e, "lancha", "inferior", "jugador", matriz)
-                        posicionesAlrededor(e, "lancha", "derecha", "jugador", matriz)
+                        posicionesAlrededor(e, barco, "inferiorV", "jugador", matriz)
+                        posicionesAlrededor(e, barco, "izquierdaV", "jugador", matriz)
+                        posicionesAlrededor(e, barco, "derechaV", "jugador", matriz)
                     } else if (usuario === "pc") {
-                        posicionesAlrededor(e, "lancha", "superior", "pc", matrizEnemigo)
-                        posicionesAlrededor(e, "lancha", "inferior", "pc", matrizEnemigo)
-                        posicionesAlrededor(e, "lancha", "derecha", "pc", matrizEnemigo)
+                        posicionesAlrededor(e, barco, "inferiorV", "pc", matrizEnemigo)
+                        posicionesAlrededor(e, barco, "izquierdaV", "pc", matrizEnemigo)
+                        posicionesAlrededor(e, barco, "derechaV", "pc", matrizEnemigo)
                     }
+
                 }
-            } else if (tipoMatriz[y][x - 1] != undefined && tipoMatriz[y - 1] == undefined) {
+            } else if (tipoMatriz[y - 1][x] != undefined && tipoMatriz[x - 1] == undefined) {
                 if (usuario === "jugador") {
-                    posicionesAlrededor(e, "lancha", "inferior", "jugador", matriz)
+                    posicionesAlrededor(e, barco, "derechaV", "jugador", matriz)
                 } else if (usuario === "pc") {
-                    posicionesAlrededor(e, "lancha", "inferior", "pc", matrizEnemigo)
+                    posicionesAlrededor(e, barco, "derechaV", "pc", matrizEnemigo)
                 }
-                tipoMatriz[y][x + 1] = 2
-                tipoMatriz[y + 1][x + 1] = 2
-                tipoMatriz[y][x - 1] = 2
-                tipoMatriz[y + 1][x - 1] = 2
-            } else if (tipoMatriz[y][x - 1] != undefined && tipoMatriz[y + 1] == undefined) {
-                if (usuario === "jugador") {
-                    posicionesAlrededor(e, "lancha", "superior", "jugador", matriz)
-                } else if (usuario === "pc") {
-                    posicionesAlrededor(e, "lancha", "superior", "pc", matrizEnemigo)
-                }
+                tipoMatriz[y + (numero + 1)][x] = 2
+                tipoMatriz[y + (numero + 1)][x + 1] = 2
+                tipoMatriz[y - 1][x] = 2
                 tipoMatriz[y - 1][x + 1] = 2
-                tipoMatriz[y][x + 1] = 2
+            } else if (tipoMatriz[y - 1][x] != undefined && tipoMatriz[x + 1] == undefined) {
+                if (usuario === "jugador") {
+                    posicionesAlrededor(e, barco, "izquierdaV", "jugador", matriz)
+                } else if (usuario === "pc") {
+                    posicionesAlrededor(e, barco, "izquierdaV", "pc", matrizEnemigo)
+                }
+                tipoMatriz[y + (numero + 1)][x - 1] = 2
+                tipoMatriz[y + (numero + 1)][x] = 2
                 tipoMatriz[y - 1][x - 1] = 2
-                tipoMatriz[y][x - 1] = 2
+                tipoMatriz[y - 1][x] = 2
             } else {
                 if (usuario === "jugador") {
-                    posicionesAlrededor(e, "lancha", "superior", "jugador", matriz)
-                    posicionesAlrededor(e, "lancha", "inferior", "jugador", matriz)
-                    posicionesAlrededor(e, "lancha", "derecha", "jugador", matriz)
-                    posicionesAlrededor(e, "lancha", "izquierda", "jugador", matriz)
+                    posicionesAlrededor(e, barco, "superiorV", "jugador", matriz)
+                    posicionesAlrededor(e, barco, "inferiorV", "jugador", matriz)
+                    posicionesAlrededor(e, barco, "derechaV", "jugador", matriz)
+                    posicionesAlrededor(e, barco, "izquierdaV", "jugador", matriz)
                 } else if (usuario === "pc") {
-                    posicionesAlrededor(e, "lancha", "superior", "pc", matrizEnemigo)
-                    posicionesAlrededor(e, "lancha", "inferior", "pc", matrizEnemigo)
-                    posicionesAlrededor(e, "lancha", "derecha", "pc", matrizEnemigo)
-                    posicionesAlrededor(e, "lancha", "izquierda", "pc", matrizEnemigo)
+                    posicionesAlrededor(e, barco, "superiorV", "pc", matrizEnemigo)
+                    posicionesAlrededor(e, barco, "inferiorV", "pc", matrizEnemigo)
+                    posicionesAlrededor(e, barco, "derechaV", "pc", matrizEnemigo)
+                    posicionesAlrededor(e, barco, "izquierdaV", "pc", matrizEnemigo)
                 }
             }
             if (usuario === "jugador") {
                 contadorBarcosCreados += 1
+                console.log(matriz)
             }
-        }
-    } else if (x == 8) {
-        if (tipoMatriz[y][x] == 0) {
+            return "yes"
+        } else if (y + numero == 8) {
             tipoMatriz[y][x] = 1
-            lecturaMatriz();
-            if (tipoMatriz[y - 1] == undefined) {
+            if (numero == 1) {
+                tipoMatriz[y + 1][x] = 1
+            } else if (numero == 2) {
+                tipoMatriz[y + 1][x] = 1
+                tipoMatriz[y + 2][x] = 1
+            } else if (numero == 3) {
+                tipoMatriz[y + 1][x] = 1
+                tipoMatriz[y + 2][x] = 1
+                tipoMatriz[y + 3][x] = 1
+            }
+            if (usuario === "jugador") {
+                lecturaMatriz();
+            }
+            if (tipoMatriz[y][x - 1] == undefined) {
                 if (usuario === "jugador") {
-                    posicionesAlrededor(e, "lancha", "inferior", "jugador", matriz)
+                    posicionesAlrededor(e, barco, "derechaV", "jugador", matriz)
                 } else if (usuario === "pc") {
-                    posicionesAlrededor(e, "lancha", "inferior", "pc", matrizEnemigo)
+                    posicionesAlrededor(e, barco, "derechaV", "pc", matrizEnemigo)
                 }
-                tipoMatriz[y][x - 1] = 2
-                tipoMatriz[y + 1][x - 1] = 2
-            } else if (tipoMatriz[y + 1] == undefined) {
+                tipoMatriz[y - 1][x] = 2
+                tipoMatriz[y - 1][x + 1] = 2
+            } else if (tipoMatriz[y][x + 1] == undefined) {
                 if (usuario === "jugador") {
-                    posicionesAlrededor(e, "lancha", "superior", "jugador", matriz)
+                    posicionesAlrededor(e, barco, "izquierdaV", "jugador", matriz)
                 } else if (usuario === "pc") {
-                    posicionesAlrededor(e, "lancha", "superior", "pc", matrizEnemigo)
+                    posicionesAlrededor(e, barco, "izquierdaV", "pc", matrizEnemigo)
                 }
                 tipoMatriz[y - 1][x - 1] = 2
-                tipoMatriz[y][x - 1] = 2
-            } else if (tipoMatriz[y - 1][x] != undefined && tipoMatriz[y + 1][x] != undefined) {
+                tipoMatriz[y - 1][x] = 2
+            } else if (tipoMatriz[y][x - 1] != undefined && tipoMatriz[y][x + 1] != undefined) {
                 if (usuario === "jugador") {
-                    posicionesAlrededor(e, "lancha", "superior", "jugador", matriz)
-                    posicionesAlrededor(e, "lancha", "inferior", "jugador", matriz)
-                    posicionesAlrededor(e, "lancha", "izquierda", "jugador", matriz)
+                    posicionesAlrededor(e, barco, "superiorV", "jugador", matriz)
+                    posicionesAlrededor(e, barco, "derechaV", "jugador", matriz)
+                    posicionesAlrededor(e, barco, "izquierdaV", "jugador", matriz)
                 } else if (usuario === "pc") {
-                    posicionesAlrededor(e, "lancha", "superior", "pc", matrizEnemigo)
-                    posicionesAlrededor(e, "lancha", "inferior", "pc", matrizEnemigo)
-                    posicionesAlrededor(e, "lancha", "izquierda", "pc", matrizEnemigo)
+                    posicionesAlrededor(e, barco, "superiorV", "pc", matrizEnemigo)
+                    posicionesAlrededor(e, barco, "derechaV", "pc", matrizEnemigo)
+                    posicionesAlrededor(e, barco, "izquierdaV", "pc", matrizEnemigo)
                 }
             }
             if (usuario === "jugador") {
                 contadorBarcosCreados += 1
+                console.log(matriz)
             }
+            return "yes"
         }
     }
 }
-
 /* crea un array de barcos del enemigo */
 const barcosEnemigos = () => {
     const verificador = []
@@ -659,22 +571,22 @@ const barcosEnemigos = () => {
             let y = coordenada[1]
             if (i === 0) {
                 if (matrizEnemigo[y][x + 3] != undefined) {
-                    creadorBuque(coordenada, x, y, "pc", matrizEnemigo)
+                    creadorBarcos(coordenada, x, y, 3, "pc", "buque", matrizEnemigo, posicionBarcos)
                     i++
                 }
             } else if (i === 1) {
                 if (matrizEnemigo[y][x] === 0 && matrizEnemigo[y][x + 2] != undefined && matrizEnemigo[y][x + 2] === 0) {
-                    creadorSubmarino(coordenada, x, y, "pc", matrizEnemigo)
+                    creadorBarcos(coordenada, x, y, 2, "pc", "submarino", matrizEnemigo, posicionBarcos)
                     i++
                 }
             } else if (i === 2) {
                 if (matrizEnemigo[y][x] === 0 && matrizEnemigo[y][x + 1] != undefined && matrizEnemigo[y][x + 1] === 0) {
-                    creadorCrucero(coordenada, x, y, "pc", matrizEnemigo)
+                    creadorBarcos(coordenada, x, y, 1, "pc", "crucero", matrizEnemigo, posicionBarcos)
                     i++
                 }
             } else if (i === 3) {
                 if (matrizEnemigo[y][x] === 0 && matrizEnemigo[y][x] != undefined) {
-                    creadorLancha(coordenada, x, y, "pc", matrizEnemigo)
+                    creadorBarcos(coordenada, x, y, 0, "pc", "lancha", matrizEnemigo, posicionBarcos)
                     console.log(matrizEnemigo)
                     i++
                 }
@@ -713,7 +625,6 @@ const defineMensaje = (estado) => {
 };
 /* elige una posicion aleatoria para disparar un misil */
 const pcDisparando = () => {
-    console.log(barcosJugador)
     const posicionY = Math.floor(Math.random() * 9) + 1;
     const posicionX = Math.floor(Math.random() * 9) + 1;
     if (!barcosElegidosPc.includes(`${posicionY}y${posicionX}x`)) {
@@ -741,8 +652,8 @@ const pinta = (e) => {
     if (!disparosRealizados.includes(objetivo)) {
         disparosRealizados.push(objetivo)
         if (barcos.includes(objetivo.id)) {
-            objetivo.style.background = "red";
             contadorBarcosHundidos += 1;
+            objetivo.style.background = "red";
             eliminados.innerHTML = contadorBarcosHundidos;
             buscaGanador(contadorBarcosHundidos)
             defineMensaje("green")
@@ -777,14 +688,14 @@ const posicionesPC = () => {
             mostrarPosicionesPc.innerHTML = "Mostrar posiciones"
         }
     } else if (modoJuego === "tradicional") {
-        if(banderaBarcosEnemigos){
+        if (banderaBarcosEnemigos) {
             cuadrados.forEach((cuadrado) => {
                 if (barcos.includes(cuadrado.id)) {
                     cuadrado.style.border = "3px solid orange";
                 }
             })
             mostrarPosicionesPc.innerHTML = "Ocultar posiciones"
-        }else {
+        } else {
             cuadrados.forEach(cuadrado => {
                 cuadrado.style.border = "1px solid grey"
             })
@@ -816,7 +727,11 @@ const dispararAlBarco = () => {
             disparosRealizados.push(barcoHundido)
             if (barcos.includes(barcoHundido.id)) {
                 barcoHundido.style.background = "red";
+                contadorBarcosHundidos += 1;
+                eliminados.innerHTML = contadorBarcosHundidos;
                 defineMensaje("green")
+                console.log("suma")
+
             } else {
                 barcoHundido.style.background = "grey";
                 defineMensaje("")
@@ -860,14 +775,33 @@ const pintaJugador = (e) => {
             let aux = coordenada.replace('x', '').replace('y', '');
             const y = parseInt(aux[0]) - 1
             const x = parseInt(aux[1]) - 1
-            if (contadorBarcosCreados === 0) {
-                creadorBuque(e, x, y, "jugador", matriz)
-            } else if (contadorBarcosCreados === 1) {
-                creadorSubmarino(e, x, y, "jugador", matriz)
-            } else if (contadorBarcosCreados === 2) {
-                creadorCrucero(e, x, y, "jugador", matriz)
-            } else if (contadorBarcosCreados === 3) {
-                creadorLancha(e, x, y, "jugador", matriz)
+            if (matriz[y][x] === 0) {
+                if (posicionBarcos === false) {
+                    if (contadorBarcosCreados === 0) {
+                        creadorBarcos(e, x, y, 3, "jugador", "buque", matriz, posicionBarcos)
+                    } else if (contadorBarcosCreados === 1) {
+                        if (matriz[y][x + 2] === 0) {
+                            creadorBarcos(e, x, y, 2, "jugador", "submarino", matriz, posicionBarcos)
+                        }
+                    } else if (contadorBarcosCreados === 2) {
+                        if (matriz[y][x + 1] === 0) {
+                            creadorBarcos(e, x, y, 1, "jugador", "crucero", matriz, posicionBarcos)
+                        }
+                    } else if (contadorBarcosCreados === 3) {
+                        creadorBarcos(e, x, y, 0, "jugador", "lancha", matriz, posicionBarcos)
+                    }
+                }
+                else if (posicionBarcos === true) {
+                    if (contadorBarcosCreados === 0) {
+                        creadorBarcos(e, x, y, 3, "jugador", "buque", matriz, posicionBarcos)
+                    } else if (contadorBarcosCreados === 1) {
+                        creadorBarcos(e, x, y, 2, "jugador", "submarino", matriz, posicionBarcos)
+                    } else if (contadorBarcosCreados === 2) {
+                        creadorBarcos(e, x, y, 1, "jugador", "crucero", matriz, posicionBarcos)
+                    } else if (contadorBarcosCreados === 3) {
+                        creadorBarcos(e, x, y, 0, "jugador", "lancha", matriz, posicionBarcos)
+                    }
+                }
             }
 
         }
@@ -876,10 +810,17 @@ const pintaJugador = (e) => {
         tableroEnemigo.style.display = ""
         instrucciones.style.display = "none"
         instruccionesBarcos.style.display = "none"
+        eleccionDeBarcos.style.display = "none"
         puntaje.style.display = ""
         defineMensaje()
         traduccion(matriz, barcosJugador)
         traduccion(matrizEnemigo, barcos)
+    } else if (barcosJugador.length === 10) {
+        tableroEnemigo.style.display = ""
+        instrucciones.style.display = "none"
+        instruccionesLanchas.style.display = "none"
+        puntaje.style.display = ""
+        defineMensaje()
     }
 };
 
@@ -901,9 +842,13 @@ const jugarConTodo = () => {
     instruccionesBarcos.style.display = ""
     opcionesJuego.style.display = "none"
     tableroJugador.style.display = ""
+    eleccionDeBarcos.style.display = ""
     modoJuego = "tradicional"
     barcosEnemigos()
 };
+const seleccionaOrientacion = () => {
+    posicionBarcos = !posicionBarcos
+}
 
 
 
@@ -918,7 +863,7 @@ const eligeBarcos = () => {
 cuadrados.forEach((cuadrado) => {
     cuadrado.addEventListener('click', pinta)
 });
-/* body.addEventListener("load", barcosEnemigos()); */
+direccion.addEventListener("change", seleccionaOrientacion)
 body.addEventListener("load", eligeBarcos());
 mostrarPosicionesPc.addEventListener("click", posicionesPC);
 disparar.addEventListener("click", dispararModal);
